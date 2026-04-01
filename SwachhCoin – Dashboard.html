@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)file:///C:/Users/intel%202025/Downloads/dashboard_1.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwachhCoin – Dashboard</title>
+  <link href="./SwachhCoin – Dashboard_files/css2" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0f0d;
+      --surface: #111816;
+      --surface2: #162019;
+      --border: #1e2e24;
+      --green: #00e676;
+      --green-dim: #00c853;
+      --green-glow: rgba(0,230,118,0.15);
+      --green-bg: #00e676;
+      --text: #e8f5e9;
+      --text-muted: #6b8f75;
+      --text-dim: #3a5544;
+      --gold: #ffc947;
+      --red: #ff5252;
+      --font-head: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 64px;
+      background: rgba(10,15,13,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-family: var(--font-head);
+      font-size: 1.25rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .logo span { color: var(--green); }
+    .logo-dot {
+      width: 10px; height: 10px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 8px var(--green); }
+      50% { box-shadow: 0 0 20px var(--green), 0 0 40px var(--green-dim); }
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      list-style: none;
+    }
+    .nav-links a {
+      display: flex; align-items: center; gap: 0.4rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover { background: var(--surface); color: var(--text); }
+    .nav-links a.active { background: rgba(0,230,118,0.1); color: var(--green); }
+    .btn-started {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: var(--green);
+      color: #0a0f0d;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.55rem 1.2rem;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-started:hover { background: #00c853; transform: translateY(-1px); box-shadow: 0 4px 20px var(--green-glow); }
+
+    /* ── MAIN ── */
+    main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+
+    /* Hero */
+    .hero {
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.5s ease both;
+    }
+    .hero h1 {
+      font-family: var(--font-head);
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+    .hero h1 .name { color: var(--green); }
+    .hero p { color: var(--text-muted); margin-top: 0.35rem; font-size: 0.95rem; }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.5s 0.1s ease both;
+    }
+    @media(max-width:768px){ .stats-grid { grid-template-columns: repeat(2,1fr); } }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.4rem 1.5rem;
+      transition: all 0.25s;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--green-glow);
+      opacity: 0;
+      transition: opacity 0.3s;
+      border-radius: inherit;
+    }
+    .stat-card:hover::before { opacity: 1; }
+    .stat-card:hover { border-color: rgba(0,230,118,0.3); transform: translateY(-2px); }
+    .stat-icon {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      margin-bottom: 0.9rem;
+    }
+    .icon-gold { background: rgba(255,201,71,0.12); color: var(--gold); }
+    .icon-green { background: rgba(0,230,118,0.12); color: var(--green); }
+    .stat-value {
+      font-family: var(--font-head);
+      font-size: 1.9rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .v-gold { color: var(--gold); }
+    .v-green { color: var(--green); }
+    .stat-label { color: var(--text-muted); font-size: 0.82rem; font-weight: 500; }
+
+    /* Action Cards */
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.5s 0.2s ease both;
+    }
+    @media(max-width:640px){ .action-grid { grid-template-columns: 1fr; } }
+
+    .card-clean {
+      background: linear-gradient(135deg, #00c853 0%, #00e676 50%, #69f0ae 100%);
+      border-radius: 18px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .card-clean:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,200,83,0.3); }
+    .card-clean::after {
+      content: '🌿';
+      position: absolute;
+      right: 1.5rem; bottom: 1rem;
+      font-size: 4rem;
+      opacity: 0.2;
+    }
+    .card-clean .card-icon { font-size: 1.6rem; margin-bottom: 0.8rem; }
+    .card-clean h3 { font-family: var(--font-head); font-size: 1.3rem; font-weight: 800; color: #0a0f0d; }
+    .card-clean p { font-size: 0.85rem; color: rgba(10,15,13,0.65); margin-top: 0.3rem; }
+    .card-clean .arrow-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px;
+      background: rgba(10,15,13,0.2);
+      border-radius: 50%;
+      margin-top: 1.2rem;
+      font-size: 1rem;
+      color: #0a0f0d;
+      transition: all 0.2s;
+    }
+    .card-clean:hover .arrow-btn { background: rgba(10,15,13,0.35); transform: translateX(3px); }
+
+    .card-redeem {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-redeem:hover { border-color: rgba(0,230,118,0.3); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,230,118,0.08); }
+    .live-dot {
+      width: 8px; height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 8px var(--green);
+      margin-bottom: 0.8rem;
+      animation: pulse 2s infinite;
+    }
+    .card-redeem h3 { font-family: var(--font-head); font-size: 1.3rem; font-weight: 800; color: var(--text); }
+    .card-redeem p { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.3rem; }
+    .card-redeem .arrow-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px;
+      background: rgba(0,230,118,0.1);
+      border-radius: 50%;
+      margin-top: 1.2rem;
+      color: var(--green);
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+    .card-redeem:hover .arrow-btn { background: rgba(0,230,118,0.2); transform: translateX(3px); }
+
+    /* Progress */
+    .progress-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.8rem;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.5s 0.3s ease both;
+    }
+    .progress-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.2rem;
+    }
+    .progress-title {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .progress-count {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .progress-count span { color: var(--text); }
+    .progress-bar-wrap {
+      height: 10px;
+      background: var(--surface2);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-bottom: 0.75rem;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      width: 90%;
+      background: linear-gradient(90deg, #00c853, #00e676, #69f0ae);
+      border-radius: 99px;
+      position: relative;
+      animation: growBar 1.2s 0.5s cubic-bezier(.22,1,.36,1) both;
+      transform-origin: left;
+    }
+    @keyframes growBar {
+      from { width: 0; }
+      to { width: 90%; }
+    }
+    .progress-bar-fill::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 60px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25));
+      border-radius: 99px;
+    }
+    .progress-note { font-size: 0.82rem; color: var(--text-muted); }
+    .progress-note span { color: var(--green); font-weight: 600; }
+
+    /* Recent Activity */
+    .section-title {
+      font-family: var(--font-head);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .activity-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      animation: fadeUp 0.5s 0.4s ease both;
+    }
+    .activity-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-item:hover { background: var(--surface2); }
+    .act-icon {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .act-icon-clean { background: rgba(0,230,118,0.12); }
+    .act-icon-redeem { background: rgba(255,82,82,0.1); }
+    .act-info { flex: 1; }
+    .act-info strong { display: block; font-size: 0.9rem; font-weight: 600; color: var(--text); }
+    .act-info span { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.15rem; display: block; }
+    .act-coins {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1rem;
+      display: flex; align-items: center; gap: 0.35rem;
+    }
+    .coin-dot { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; }
+    .coin-gold { background: var(--gold); box-shadow: 0 0 6px rgba(255,201,71,0.5); }
+    .plus { color: var(--green); }
+    .minus { color: var(--red); }
+
+    /* Leaderboard mini */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      animation: fadeUp 0.5s 0.5s ease both;
+    }
+    @media(max-width:640px){ .bottom-grid { grid-template-columns: 1fr; } }
+
+    .mini-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.5rem;
+    }
+    .lb-item {
+      display: flex; align-items: center; gap: 0.9rem;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .lb-item:last-child { border-bottom: none; }
+    .lb-rank {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 0.85rem;
+      width: 28px;
+      color: var(--text-muted);
+    }
+    .lb-rank.top { color: var(--gold); }
+    .lb-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: linear-gradient(135deg, #00c853, #00e676);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 700; color: #0a0f0d;
+    }
+    .lb-name { flex: 1; font-size: 0.88rem; font-weight: 500; }
+    .lb-score { font-family: var(--font-head); font-size: 0.85rem; font-weight: 700; color: var(--green); }
+
+    .badges-wrap { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.5rem 0.9rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      cursor: default;
+    }
+    .badge:hover { border-color: rgba(0,230,118,0.4); background: rgba(0,230,118,0.06); }
+    .badge.earned { border-color: rgba(255,201,71,0.4); background: rgba(255,201,71,0.06); color: var(--gold); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    Swachh<span>Coin</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="file:///C:/Users/intel%202025/Downloads/dashboard_1.html#">🏠 Home</a></li>
+    <li><a href="file:///C:/Users/intel%202025/Downloads/dashboard_1.html#" class="active">⊞ Dashboard</a></li>
+    <li><a href="file:///C:/Users/intel%202025/Downloads/dashboard_1.html#">📷 Clean</a></li>
+    <li><a href="file:///C:/Users/intel%202025/Downloads/dashboard_1.html#">🏆 Leaderboard</a></li>
+    <li><a href="file:///C:/Users/intel%202025/Downloads/dashboard_1.html#">🎁 Rewards</a></li>
+  </ul>
+  <button class="btn-started">→ Get Started</button>
+</nav>
+
+<main>
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>Welcome back, <span class="name">Cleaner</span> 🧹</h1>
+    <p>Keep cleaning, keep earning!</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon icon-gold">💰</div>
+      <div class="stat-value v-gold" id="coins">180</div>
+      <div class="stat-label">Total Coins</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon icon-green">📷</div>
+      <div class="stat-value v-green" id="cleanups">42</div>
+      <div class="stat-label">Cleanups</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon icon-green">🏆</div>
+      <div class="stat-value v-green">#15</div>
+      <div class="stat-label">Rank</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon icon-green">📅</div>
+      <div class="stat-value v-green">1/2</div>
+      <div class="stat-label">Today</div>
+    </div>
+  </div>
+
+  <!-- Action Cards -->
+  <div class="action-grid">
+    <div class="card-clean" onclick="alert(&#39;Start Cleaning clicked!&#39;)">
+      <div class="card-icon">📷</div>
+      <h3>Start Cleaning</h3>
+      <p>1 cleanup remaining today</p>
+      <div class="arrow-btn">→</div>
+    </div>
+    <div class="card-redeem" onclick="alert(&#39;Redeem Coins clicked!&#39;)">
+      <div class="live-dot"></div>
+      <h3>Redeem Coins</h3>
+      <p>20 more coins for your first reward</p>
+      <div class="arrow-btn">→</div>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-card">
+    <div class="progress-header">
+      <div class="progress-title">📈 Progress to Next Reward</div>
+      <div class="progress-count"><span>180</span>/200 coins</div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill"></div>
+    </div>
+    <div class="progress-note">
+      Collect <span>200 coins</span> for a <span>20% discount</span> at partner stores
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="section-title">⚡ Recent Activity</div>
+  <div class="activity-card">
+    <div class="activity-item">
+      <div class="act-icon act-icon-clean">📷</div>
+      <div class="act-info">
+        <strong>MG Road, Bangalore</strong>
+        <span>2 hours ago</span>
+      </div>
+      <div class="act-coins plus">
+        +10 <div class="coin-dot coin-gold"></div>
+      </div>
+    </div>
+    <div class="activity-item">
+      <div class="act-icon act-icon-clean">📷</div>
+      <div class="act-info">
+        <strong>Connaught Place, Delhi</strong>
+        <span>5 hours ago</span>
+      </div>
+      <div class="act-coins plus">
+        +10 <div class="coin-dot coin-gold"></div>
+      </div>
+    </div>
+    <div class="activity-item">
+      <div class="act-icon act-icon-redeem">🎫</div>
+      <div class="act-info">
+        <strong>Zomato 20% Discount Redeemed</strong>
+        <span>1 day ago</span>
+      </div>
+      <div class="act-coins minus">
+        -200 <div class="coin-dot coin-gold"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Grid: Leaderboard + Badges -->
+  <div class="bottom-grid">
+    <div class="mini-card">
+      <div class="section-title">🏆 Top Cleaners</div>
+      <div class="lb-item">
+        <div class="lb-rank top">1st</div>
+        <div class="lb-avatar">RK</div>
+        <div class="lb-name">Rahul K.</div>
+        <div class="lb-score">640 🪙</div>
+      </div>
+      <div class="lb-item">
+        <div class="lb-rank top">2nd</div>
+        <div class="lb-avatar">PS</div>
+        <div class="lb-name">Priya S.</div>
+        <div class="lb-score">580 🪙</div>
+      </div>
+      <div class="lb-item">
+        <div class="lb-rank top">3rd</div>
+        <div class="lb-avatar">AM</div>
+        <div class="lb-name">Arjun M.</div>
+        <div class="lb-score">510 🪙</div>
+      </div>
+      <div class="lb-item">
+        <div class="lb-rank">15th</div>
+        <div class="lb-avatar" style="background:linear-gradient(135deg,#ffc947,#ff9800);color:#0a0f0d">You</div>
+        <div class="lb-name" style="color:var(--green);font-weight:700">You</div>
+        <div class="lb-score">180 🪙</div>
+      </div>
+    </div>
+
+    <div class="mini-card">
+      <div class="section-title">🏅 Badges</div>
+      <div class="badges-wrap">
+        <div class="badge earned">🌟 First Cleanup</div>
+        <div class="badge earned">📍 10 Locations</div>
+        <div class="badge earned">🔥 5-Day Streak</div>
+        <div class="badge">🌏 50 Cleanups</div>
+        <div class="badge">👑 Top 10</div>
+        <div class="badge">💎 500 Coins</div>
+        <div class="badge">🚀 Delhi Champ</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+
+
+</body></html>
